@@ -1,0 +1,55 @@
+{
+    "name": "nash/pin",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Nash\\Pin\\": "src/"
+        },
+        "files": [
+            "src/boot.inc"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Nash",
+            "email": "896076336@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "hyperf/command": "^3.0.0",
+        "hyperf/config": "^3.0.0",
+        "hyperf/context": "^3.0.16",
+        "hyperf/contract": "^3.0.0",
+        "hyperf/di": "^3.0.0",
+        "hyperf/framework": "^3.0.0",
+        "hyperf/http-server": "^3.0.0",
+        "hyperf/stringable": "^3.0.0",
+        "hyperf/support": "^3.0.0",
+        "hyperf/tappable": "^3.0.0"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://mirrors.tencent.com/composer/"
+        }
+    },
+    "suggest": {
+        "hyperf/engine-swow": "Required to use Swow ext.",
+        "hyperf/db-connection": "Required to use Mysql client.",
+        "hyperf/redis": "Required to use Redis client.",
+        "hyperf/logger": "Required to use Logger.",
+        "hyperf/cache": "Required to use Cache.",
+        "hyperf/session": "Required to use Session.",
+        "hyperf/translation": "Required to use I18n.",
+        "hyperf/validation": "Required to use Validation.",
+        "hyperf/task": "Required to use Task Worker.",
+        "hyperf/watcher": "Required to use Hot reload.",
+        "hyperf/guzzle": "Required to use Guzzle Http client.",
+        "hyperf/websocket-server": "Required to use Websocket server.",
+        "hyperf/process": "Required to use User process or Crontab.",
+        "hyperf/crontab": "Required to use Crontab.",
+        "swoole/ide-helper": "This package contains IDE help files for Swoole."
+    }
+}
