@@ -1,5 +1,6 @@
 {
     "name": "nash/pin",
+    "description" : "Pin 是一款零配置、无骨架、极小化的 Hyperf 发行版，它的灵感来源于 hyperf/nano。",
     "type": "library",
     "license": "MIT",
     "autoload": {
