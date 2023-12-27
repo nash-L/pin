@@ -6,7 +6,7 @@ use Nash\Pin\Core\CallableTransform;
 use Nash\Pin\Core\Container;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Swow\Psr7\Message\ResponsePlusInterface;
+use Psr\Http\Message\ResponseInterface;
 use Throwable;
 use function Hyperf\Support\call;
 
@@ -20,10 +20,10 @@ class ExceptionHandler extends \Hyperf\ExceptionHandler\ExceptionHandler
 
     /**
      * @param Throwable $throwable
-     * @param ResponsePlusInterface $response
+     * @param ResponseInterface $response
      * @return void
      */
-    public function handle(Throwable $throwable, ResponsePlusInterface $response): void
+    public function handle(Throwable $throwable, ResponseInterface $response): void
     {
         call($this->callback, [$throwable]);
     }
