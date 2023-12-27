@@ -57,7 +57,7 @@ final class App
      */
     public static function setPort(int $port): void
     {
-        self::server()->setType($port);
+        self::server()->setPort($port);
     }
 
     /**
