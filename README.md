@@ -29,7 +29,7 @@ composer require nash/pin
 在项目根目录打开命令行，执行以下命令
 
 ```bash
-php -r "require 'vendor/autoload.php';" start
+php -d "swoole.use_shortname='Off'" -r "require 'vendor/autoload.php';" start
 ```
 
 您已经开启了一个可以输出 hello world 的 HTTP 服务，在浏览器打开 `http://127.0.0.1:9501` 就可以看到您的项目在跟这个世界问好。
@@ -50,7 +50,7 @@ require __DIR__ . '/vendor/autoload.php';
 然后，在项目根目录打开命令行，执行以下命令
 
 ```bash
-php index.php start
+php -d "swoole.use_shortname='Off'" index.php start
 ```
 
 你的服务依然开起来了，在浏览器打开 `http://127.0.0.1:9501` 就可以看到您的项目再次跟这个世界问好。
