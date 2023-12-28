@@ -5,6 +5,7 @@ use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Engine\{DefaultOption, Extension};
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Nash\Pin\Core\{Application, Command, Config, Container, Crontab, Listener, Process, Server};
+use Nash\Pin\Command\Output;
 use Psr\Log\LogLevel;
 
 $GLOBALS['__ENTER_POINT__'] = new class {
@@ -50,7 +51,7 @@ $GLOBALS['__ENTER_POINT__'] = new class {
 
     function onThrowable(Throwable $throwable): void
     {
-        App::printThrowable($throwable);
+        Nash\Pin\App::printThrowable($throwable, new Output);
         $this->hasError = true;
     }
 
@@ -71,10 +72,10 @@ $GLOBALS['__ENTER_POINT__'] = new class {
     function applyServer():self
     {
         if (empty(array_map(
-            fn(Server $server)=>$server->addExceptionHandler([App::class, 'printThrowable'])->applyConfig(),
+            fn(Server $server)=>$server->addExceptionHandler([Nash\Pin\App::class, 'printThrowable'])->applyConfig(),
             Container::instance()->getMap(Server::class)))
         ) // 如果没有定义任何服务，将添加一个Hello world服务
-            Server::instance(Server::DEFAULT_SERVER)->addExceptionHandler([App::class, 'printThrowable'])
+            Server::instance(Server::DEFAULT_SERVER)->addExceptionHandler([Nash\Pin\App::class, 'printThrowable'])
                 ->get('/', fn(ResponseInterface $response)=>$response->write('Hello World!'))->applyConfig();
         Container::instance()->unbindMap(Server::class);
         return $this;

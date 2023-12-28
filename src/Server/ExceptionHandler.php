@@ -2,6 +2,7 @@
 
 namespace Nash\Pin\Server;
 
+use Hyperf\Context\Context;
 use Nash\Pin\Core\CallableTransform;
 use Nash\Pin\Core\Container;
 use Psr\Container\ContainerExceptionInterface;
@@ -21,11 +22,16 @@ class ExceptionHandler extends \Hyperf\ExceptionHandler\ExceptionHandler
     /**
      * @param Throwable $throwable
      * @param ResponseInterface $response
-     * @return void
+     * @return ResponseInterface
      */
-    public function handle(Throwable $throwable, ResponseInterface $response): void
+    public function handle(Throwable $throwable, ResponseInterface $response): ResponseInterface
     {
-        call($this->callback, [$throwable]);
+        $result = call($this->callback, [$throwable]);
+        if ($result instanceof ResponseInterface) {
+            $this->stopPropagation();
+            return $result;
+        }
+        return Context::get(ResponseInterface::class);
     }
 
     /**

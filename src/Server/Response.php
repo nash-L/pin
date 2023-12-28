@@ -2,7 +2,7 @@
 
 namespace Nash\Pin\Server;
 
-use Hyperf\Context\ResponseContext;
+use Hyperf\Context\Context;
 use Hyperf\HttpMessage\Cookie\Cookie;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Nash\Pin\Core\Container;
@@ -11,7 +11,6 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Swow\Psr7\Message\ResponsePlusInterface;
 
 class Response implements ResponseInterface, PsrResponseInterface
 {
@@ -27,12 +26,12 @@ class Response implements ResponseInterface, PsrResponseInterface
     public function __call(string $name, array $arguments)
     {
         if (in_array($name, ['withCookie', 'withHeader', 'withProtocolVersion', 'withStatus', 'withAddedHeader', 'withoutHeader', 'withBody'])) {
-            $result = ResponseContext::get()->{$name}(...$arguments);
+            $result = Context::get(PsrResponseInterface::class)->{$name}(...$arguments);
         } else {
             $result = Container::instance()->get(ResponseInterface::class)->{$name}(...$arguments);
         }
-        if ($result instanceof ResponsePlusInterface) {
-            ResponseContext::set($result);
+        if ($result instanceof PsrResponseInterface) {
+            Context::set(PsrResponseInterface::class, $result);
             return $this;
         }
         return $result;

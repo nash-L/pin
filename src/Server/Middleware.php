@@ -2,8 +2,7 @@
 
 namespace Nash\Pin\Server;
 
-use Hyperf\Context\RequestContext;
-use Hyperf\Context\ResponseContext;
+use Hyperf\Context\Context;
 use Nash\Pin\Core\CallableTransform;
 use Nash\Pin\Core\Container;
 use Psr\Container\ContainerExceptionInterface;
@@ -29,8 +28,12 @@ class Middleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $result = call($this->callback, [fn()=>$handler->handle(RequestContext::get())]);
-        return $result instanceof ResponseInterface ? $result : ResponseContext::get();
+        $result = call($this->callback, [function() use ($handler) {
+            Context::set(ResponseInterface::class, $handler->handle(Context::get(ServerRequestInterface::class)));
+        }]);
+        if ($result instanceof ResponseInterface)
+            return Context::set(ResponseInterface::class, $result);
+        return Context::get(ResponseInterface::class);
     }
 
     /**

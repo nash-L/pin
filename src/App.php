@@ -5,6 +5,7 @@ namespace Nash\Pin;
 use Error, Throwable, Hyperf\Server\Event;
 use Nash\Pin\Core\{Application, Command, Config, Container, Crontab, Listener, Process, Server};
 use Psr\Container\{ContainerExceptionInterface, NotFoundExceptionInterface};
+use Nash\Pin\Command\Output;
 
 /**
  * addCrontab
@@ -306,23 +307,25 @@ final class App
 
     /**
      * @param Throwable $throwable
+     * @param Output|null $output
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public static function printThrowable(Throwable $throwable): void
+    public static function printThrowable(Throwable $throwable, ?Output $output = null): void
     {
+        $output = $output ?? Application::instance()->getOutput();
         $type = $throwable instanceof Error ? 'error' : 'exception';
-        Application::instance()->getOutput()->getErrorOutput()->writeln(sprintf(
+        $output->getErrorOutput()->writeln(sprintf(
             '<error>PHP Fatal %s:  Uncaught %s: %s in %s:%d</error>',
             $type, get_class($throwable), $throwable->getMessage(), $throwable->getFile(), $throwable->getLine()
         ));
-        Application::instance()->getOutput()->getErrorOutput()->writeln('<error>  Stack trace:</error>');
+        $output->getErrorOutput()->writeln('<error>  Stack trace:</error>');
         array_map(
-            fn($message)=>Application::instance()->getOutput()->getErrorOutput()->writeln(sprintf('<error>  %s</error>', $message)),
+            fn($message)=>$output->getErrorOutput()->writeln(sprintf('<error>  %s</error>', $message)),
             explode("\n", $throwable->getTraceAsString())
         );
-        Application::instance()->getOutput()->getErrorOutput()->writeln(sprintf(
+        $output->getErrorOutput()->writeln(sprintf(
             '<error>    thrown in %s on line %d</error>',
             $throwable->getFile(), $throwable->getLine()
         ));

@@ -58,4 +58,13 @@ class Command extends \Hyperf\Command\Command
         Config::instance()->append('commands', Container::instance()->setEntity($this));
         return $this;
     }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function handle(): void
+    {
+        $this->__invoke();
+    }
 }

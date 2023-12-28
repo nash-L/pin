@@ -2,7 +2,7 @@
 
 namespace Nash\Pin\Server;
 
-use Hyperf\Context\RequestContext;
+use Hyperf\Context\Context;
 use Hyperf\HttpMessage\Upload\UploadedFile;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Nash\Pin\Core\Container;
@@ -29,7 +29,7 @@ class Request implements RequestInterface
     {
         $result = Container::instance()->get(RequestInterface::class)->{$name}(...$arguments);
         if ($result instanceof ServerRequestInterface) {
-            RequestContext::set($result);
+            Context::set(ServerRequestInterface::class, $result);
             return $this;
         }
         return $result;
