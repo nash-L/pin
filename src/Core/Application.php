@@ -40,7 +40,7 @@ class Application
             Event::ON_START, Event::ON_WORKER_START, Event::ON_WORKER_STOP, Event::ON_WORKER_EXIT, Event::ON_WORKER_ERROR, Event::ON_BEFORE_START,
             Event::ON_PIPE_MESSAGE, Event::ON_TASK, Event::ON_FINISH, Event::ON_SHUTDOWN, Event::ON_MANAGER_START, Event::ON_MANAGER_STOP,
         ]))
-            $this->eventCallBacks[$event] = CallableTransform::create($call);
+            $this->eventCallBacks[$event] = CallableTransform::create($call, true);
     }
 
     public function __construct()

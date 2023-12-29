@@ -9,6 +9,27 @@ use function Hyperf\Support\call;
 
 class CallableTransform
 {
+    /** @var callable|null */
+    private $callback;
+
+    /**
+     * @param callable|null $callback
+     */
+    public function __construct(?callable $callback = null)
+    {
+        $this->callback = $callback;
+    }
+
+    /**
+     * @param ...$arguments
+     * @return mixed|null
+     */
+    public function __invoke(...$arguments)
+    {
+        if ($this->callback)
+            return call($this->callback, $arguments);
+    }
+
     /**
      * @param string $name
      * @param array $arguments
@@ -36,12 +57,15 @@ class CallableTransform
 
     /**
      * @param callable $callback
-     * @return array
+     * @param bool $entitySelf
+     * @return array|string[]
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public static function create(callable $callback): array
+    public static function create(callable $callback, bool $entitySelf = false): array
     {
+        if ($entitySelf)
+            return [Container::instance()->setEntity(new self($callback)), '__invoke'];
         return [self::class, '__invoke_' . Container::instance()->setEntity(Closure::fromCallable($callback))];
     }
 }

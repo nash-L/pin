@@ -85,7 +85,7 @@ class Server
             Event::ON_REQUEST, Event::ON_RECEIVE, Event::ON_CONNECT, Event::ON_HAND_SHAKE, Event::ON_OPEN,
             Event::ON_MESSAGE, Event::ON_CLOSE, Event::ON_PACKET,
         ]))
-            $this->eventCallBacks[$event] = CallableTransform::create($call);
+            $this->eventCallBacks[$event] = CallableTransform::create($call, true);
     }
 
     /**
