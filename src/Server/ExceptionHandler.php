@@ -27,10 +27,10 @@ class ExceptionHandler extends \Hyperf\ExceptionHandler\ExceptionHandler
     public function handle(Throwable $throwable, ResponseInterface $response): ResponseInterface
     {
         $result = call($this->callback, [$throwable]);
-        if ($result instanceof ResponseInterface) {
+        if (!$result instanceof Throwable)
             $this->stopPropagation();
-            return $result;
-        }
+        if ($result instanceof ResponseInterface && !$result instanceof Response)
+            return Context::set(ResponseInterface::class, $result);
         return Context::get(ResponseInterface::class);
     }
 

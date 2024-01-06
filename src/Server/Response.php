@@ -30,7 +30,7 @@ class Response implements ResponseInterface, PsrResponseInterface
         } else {
             $result = Container::instance()->get(ResponseInterface::class)->{$name}(...$arguments);
         }
-        if ($result instanceof PsrResponseInterface) {
+        if ($result instanceof PsrResponseInterface && !$result instanceof Response) {
             Context::set(PsrResponseInterface::class, $result);
             return $this;
         }

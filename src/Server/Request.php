@@ -28,7 +28,7 @@ class Request implements RequestInterface
     public function __call(string $name, array $arguments)
     {
         $result = Container::instance()->get(RequestInterface::class)->{$name}(...$arguments);
-        if ($result instanceof ServerRequestInterface) {
+        if ($result instanceof ServerRequestInterface && !$result instanceof Request) {
             Context::set(ServerRequestInterface::class, $result);
             return $this;
         }

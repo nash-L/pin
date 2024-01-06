@@ -31,7 +31,7 @@ class Middleware implements MiddlewareInterface
         $result = call($this->callback, [function() use ($handler) {
             Context::set(ResponseInterface::class, $handler->handle(Context::get(ServerRequestInterface::class)));
         }]);
-        if ($result instanceof ResponseInterface)
+        if ($result instanceof ResponseInterface && !$result instanceof Response)
             return Context::set(ResponseInterface::class, $result);
         return Context::get(ResponseInterface::class);
     }
