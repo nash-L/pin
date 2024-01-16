@@ -29,7 +29,10 @@ class Middleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $result = call($this->callback, [function() use ($handler) {
-            Context::set(ResponseInterface::class, $handler->handle(Context::get(ServerRequestInterface::class)));
+            $result = $handler->handle(Context::get(ServerRequestInterface::class));
+            if ($result instanceof ResponseInterface && !$result instanceof Response)
+                return Context::set(ResponseInterface::class, $result);
+            return $result;
         }]);
         if ($result instanceof ResponseInterface && !$result instanceof Response)
             return Context::set(ResponseInterface::class, $result);
