@@ -66,7 +66,7 @@ class Config implements ConfigInterface
      */
     public function merge(string $key, mixed $value): void
     {
-        $this->set($key, array_merge_recursive($this->get($key), $value));
+        $this->set($key, array_merge_recursive($this->get($key, []), $value));
     }
 
     /**
